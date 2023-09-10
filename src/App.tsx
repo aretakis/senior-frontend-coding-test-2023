@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import {MovieSearch} from "./MovieSearch";
 
 const Wrapper = styled.div`
   max-width: 960px;
@@ -9,22 +10,11 @@ const Wrapper = styled.div`
   color: #444;
 `;
 
-const Title = styled.h1`
-  margin: 0 0 1rem;
-  font-size: 2rem;
-`;
-
 export const App = () => {
   return (
     <Wrapper>
-      <Title>Welcome!</Title>
-      <p>
-        This is the development environment of the coding test! We have added
-        some sparse boilerplate for Emotion and Playwright to help you get
-        started. Make sure to read the readme properly before you get coding and
-        don't hesitate to get in touch with us if you have any questions.
-      </p>
-      <i>Good luck! ⭐️</i>
+        <h1>OMDb Movie Search</h1>
+        <MovieSearch/>
     </Wrapper>
   );
 };
