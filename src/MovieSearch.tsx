@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
 import {useState} from "react";
-import {MovieContainer} from "./MovieContainer";
+import {MovieResultContainer} from "./MovieResultContainer";
 import {css} from "@emotion/react";
 
-const Input = styled.input`
+const SearchInput = styled.input`
   font-size: 1.2rem;
   padding: 0.5em;
   width: 50%;
@@ -11,7 +11,7 @@ const Input = styled.input`
   border: none;
 `;
 
-const Checkbox = styled.div`
+const DetailedViewCheckbox = styled.div`
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
@@ -39,14 +39,15 @@ export const MovieSearch = () => {
 
     return (
         <>
-            <Input type="text" testId="searchInput" onChange={searchMovies} placeholder="Search OMDb"/>
-            <Checkbox>
+            <SearchInput type="text" testId="searchInput" onChange={searchMovies} placeholder="Search OMDb"/>
+            {hasMovieResponse && (
+                <DetailedViewCheckbox>
                 <input css={css`height: 1rem; width: 1rem;`} type="checkbox" name="showDetaildView" onClick={()=>handleChange()}/>
-                <span css={css`text-align: center;`}>Show detailed view</span>
-            </Checkbox>
+                <span css={css`text-align: center;`}>Detailed view</span>
+            </DetailedViewCheckbox>)}
             <h3 data-testid="searchResultTitle">{hasMovieResponse && 'Searchresult'}</h3>
              {hasMovieResponse && movieSearchResult.Search.map(movie=>
-                <MovieContainer movieSearchResult={movie} showDetailedView={showDetailedView}/>
+                <MovieResultContainer movieSearchResult={movie} showDetailedView={showDetailedView}/>
             )}
         </>
     );

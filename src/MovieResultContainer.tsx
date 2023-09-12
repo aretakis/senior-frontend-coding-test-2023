@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import {css} from "@emotion/react";
-import {useCallback, useEffect, useState} from "react";
+import {FC, useCallback, useEffect, useState} from "react";
+import {MovieDetails} from "./MovieDetails";
 
 const Image = styled.img`
   width: auto;
@@ -33,32 +34,42 @@ const Container = styled.div`
    margin: 0.5rem 0rem;
 `;
 
-const Category = styled.span` 
-    font-weight: bold;
-`;
+declare type MovieSearchResult = {
+    imdbID: string;
+    Poster: string;
+    Title: string;
+    Year: string;
+    imdbRating: string;
+};
 
-export const MovieContainer = ({movieSearchResult, showDetailedView}) => {
+export interface MovieContainerProps {
+    movieSearchResult: MovieSearchResult;
+    showDetailedView: boolean;
+}
+
+export const MovieResultContainer: FC<MovieContainerProps> = ({movieSearchResult, showDetailedView}) => {
     const [movieDetails, setMovieDetails] = useState();
 
-    const fetchMovies = async (url: string) => {
-        const response = await fetch(url);
-        return await response.json();
-    };
+    const fetchMovieDetails = useCallback(async () => {
 
-    const getDetails =  useCallback(async () => {
+        const fetchMovies = async (url: string) => {
+            const response = await fetch(url);
+            return await response.json();
+        };
+
         const apiKey = 'e10af0d4';
         const url = `http://www.omdbapi.com/?apikey=${apiKey}&i=${movieSearchResult.imdbID}`;
         const result = await fetchMovies(url);
         setMovieDetails(result)
-    },[movieSearchResult.imdbID]);
+    }, [movieSearchResult.imdbID]);
 
     useEffect(() => {
-        if(!movieDetails) {
-            void getDetails();
+        if (!movieDetails) {
+            void fetchMovieDetails();
         }
-    }, [getDetails, movieDetails, showDetailedView]);
+    }, [fetchMovieDetails, movieDetails, showDetailedView]);
 
-    if(movieDetails) {
+    if (movieDetails) {
         return (
             <Container>
                 <Image src={movieSearchResult.Poster && movieSearchResult.Poster}/>
@@ -66,15 +77,9 @@ export const MovieContainer = ({movieSearchResult, showDetailedView}) => {
                     <div css={css`font-weight: bold;`}>{movieSearchResult.Title && movieSearchResult.Title}</div>
                     <span>{movieSearchResult.Year && movieSearchResult.Year}</span>
                     {movieSearchResult.imdbRating && <ImdbResult> {movieSearchResult.imdbRating}</ImdbResult>}
-                    {showDetailedView && movieDetails &&(
-                        <>
-                            <p>{movieDetails.Plot && movieDetails.Plot}</p>
-                            <p><Category>Actors </Category>{movieDetails.Actors && movieDetails.Actors}</p>
-                            <p><Category>Country </Category>{movieDetails.Country && movieDetails.Country}</p>
-                            <p><Category>Director </Category> {movieDetails.Director && movieDetails.Director}</p>
-                            <p>{movieDetails.Genre && movieDetails.Genre}</p>
-                            <ImdbResult>{movieDetails.imdbRating && movieDetails.imdbRating}</ImdbResult>
-                        </>)}
+                    {showDetailedView && movieDetails && (
+                        <MovieDetails movieDetails={movieDetails}/>
+                    )}
                 </MovieInfo>
             </Container>
         );

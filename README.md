@@ -49,3 +49,11 @@ How to:
 ## Questions
 
 If there are any questions or uncertainties during the work, the candidate is first and foremost allowed to make assumptions. It is important that these assumptions are clearly stated in the form of comments in the code or in the presentation of the task. If it is not possible to make an assumption, questions can be asked to [Mikael Karlsson](mailto:mikael.karlsson@econans.se).
+
+## Solution
+
+- Creating of the components MovieSearch, MovieResultContainer and MovieDetails. 
+
+- As an extra functionality there is now the ability to choose detailed layout by clicking a checkbox in the top right (this could later be refactored to a styled radiobutton). 
+
+Further refactoring could include expanding TypeScript usage, writing more tests, structuring the CSS better and breaking down the component into smaller functional components etc.
